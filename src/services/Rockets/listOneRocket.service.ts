@@ -10,6 +10,5 @@ export const ListOneRocket = async (id: string) => {
 
   const { userId, ...response } = rocket;
 
-  console.log(response);
   return response;
 };

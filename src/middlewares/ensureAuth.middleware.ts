@@ -30,7 +30,6 @@ export const ensureAuth = async (
 
     const { sub, isAdm } = decoded as TokenPayload;
 
-    // console.log(decoded);
     req.user = {
       id: sub,
       isAdm,

@@ -1,9 +1,8 @@
 import { ListOneRocket } from "./../services/Rockets/listOneRocket.service";
 import { ListRocketsService } from "./../services/Rockets/listRockets.service";
 import { CreateRocketService } from "./../services/Rockets/createRocket.service";
-import { query, Request, Response } from "express";
+import { Request, Response } from "express";
 import { DeleteRocketService } from "../services/Rockets/deleteRocket.service";
-import { request } from "http";
 import { UpdateRocketService } from "../services/Rockets/updateRocket.service";
 import { PageRocketsService } from "../services/Rockets/paginationRocket.service";
 
@@ -48,9 +47,9 @@ export default class RocketsController {
   }
 
   static async indexPage(req: Request, res: Response) {
-    const {take} = req.query
+    const { take, skip } = req.query;
 
-    const users = await PageRocketsService(Number(take));
+    const users = await PageRocketsService(Number(take), Number(skip));
 
     return res.status(200).json(users);
   }

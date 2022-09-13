@@ -1,8 +1,9 @@
 import { prisma } from "../../app";
 
-export const PageRocketsService = async (take: number) => {
+export const PageRocketsService = async (take: number, skip: number) => {
   const rockets = await prisma.rocket.findMany({
-    take: take
+    take,
+    skip,
   });
 
   const response: any[] = [];
