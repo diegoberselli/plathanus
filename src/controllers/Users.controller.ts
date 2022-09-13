@@ -4,6 +4,7 @@ import { DeleteUserService } from "../services/Users/deleteUser.service";
 import { ListUserService } from "../services/Users/listUser.service";
 
 export default class UsersController {
+  
   static async store(req: Request, res: Response) {
     const data = req.body;
     const user = await CreateUserService(data);

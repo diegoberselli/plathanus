@@ -1,12 +1,9 @@
--- CreateEnum
-CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
-
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "username" VARCHAR NOT NULL,
     "password" VARCHAR NOT NULL,
-    "isAdm" "Role" NOT NULL DEFAULT 'USER',
+    "isAdm" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
@@ -15,6 +12,7 @@ CREATE TABLE "users" (
 CREATE TABLE "rockets" (
     "id" TEXT NOT NULL,
     "name" VARCHAR NOT NULL,
+    "description" VARCHAR NOT NULL,
     "height" DOUBLE PRECISION NOT NULL,
     "diameter" DOUBLE PRECISION NOT NULL,
     "mass" DOUBLE PRECISION NOT NULL,
@@ -26,6 +24,9 @@ CREATE TABLE "rockets" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_id_key" ON "users"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_username_key" ON "users"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "rockets_id_key" ON "rockets"("id");

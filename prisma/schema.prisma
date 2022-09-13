@@ -22,14 +22,15 @@ model User {
 }
 
 model Rocket {
-  id       String @id @unique @default(uuid())
-  name     String @db.VarChar()
-  height   Float  @db.DoublePrecision()
-  diameter Float  @db.DoublePrecision()
-  mass     Float  @db.DoublePrecision()
-  image    String @db.VarChar()
-  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String
+  id          String @id @unique @default(uuid())
+  name        String @db.VarChar()
+  description String @db.VarChar()
+  height      Float  @db.DoublePrecision()
+  diameter    Float  @db.DoublePrecision()
+  mass        Float  @db.DoublePrecision()
+  image       String @db.VarChar()
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
 
   @@map("rockets")
 }
