@@ -504,12 +504,6 @@ Vazio
 
 ### `/rockets/pagination`
 
-### Parâmetros da Requisição:
-
-| Parâmetro | Tipo   | Descrição                                                          |
-| --------- | ------ | ------------------------------------------------------------------ |
-| status    | string | Status do pedido (Order) , pode ser: pending,intransit ou finished |
-
 ### Corpo da Requisição:
 
 ```json
@@ -547,7 +541,7 @@ Vazio
 
 ### Possíveis Erros:
 
-Nenhum, apenas uma lista vazia caso não encontre nenhuma order
+Nenhum, apenas uma lista vazia caso não encontre nenhum rocket
 
 #
 
