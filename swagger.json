@@ -11,8 +11,12 @@
   },
   "servers": [
     {
-      "url": "https://plathanus-challenge.herokuapp.com/",
+      "url": "http://localhost:3333",
       "description": "development"
+    },
+    {
+      "url": "http://localhost:3333",
+      "description": "production"
     }
   ],
   "paths": {
@@ -25,16 +29,7 @@
           "content": {
             "aplication/json": {
               "schema": {
-                "$ref": "#components/schemas/Users"
-              },
-              "examples": {
-                "user": {
-                  "value": {
-                    "username": "admin",
-                    "password": "1234",
-                    "isAdm": true
-                  }
-                }
+                "$ref": "#/components/schemas/Users"
               }
             }
           }
@@ -46,16 +41,10 @@
               "aplication/json": {
                 "schema": {
                   "type": "object",
-                  "items": { "$ref": "#/components/schemas/Users" }
-                },
-                "examples": {
-                  "user": {
-                    "value": {
-                      "id": "1e8be9bd-b023-4976-a0ba-ad6ccc4cb348",
-                      "username": "admin",
-                      "password": "1234",
-                      "isAdm": true
-                    }
+                  "properties": {
+                    "id": { "type": "string" },
+                    "username": { "type": "string" },
+                    "isAdm": { "type": "boolean" }
                   }
                 }
               }
@@ -180,7 +169,7 @@
                 "user": {
                   "value": {
                     "username": "admin",
-                    "password": "1234"
+                    "password": "admin"
                   }
                 }
               }
@@ -630,12 +619,25 @@
           },
           "password": {
             "type": "string"
+          },
+          "isAdm": {
+            "default": {
+              "type": "boolean"
+            }
           }
+        },
+        "example": {
+          "username": "admin",
+          "password": "admin",
+          "isAdm": true
         }
       },
       "Rockets": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string"
+          },
           "name": {
             "type": "string"
           },
@@ -652,6 +654,9 @@
             "type": "number"
           },
           "image": {
+            "type": "string"
+          },
+          "userId": {
             "type": "string"
           }
         }

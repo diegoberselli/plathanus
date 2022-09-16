@@ -1,5 +1,5 @@
 import { prisma } from "./../../app";
-import { Rocket, User } from "@prisma/client";
+import { User } from "@prisma/client";
 import AppError from "../../errors/appError";
 import { hash } from "bcryptjs";
 

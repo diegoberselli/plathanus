@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
-import { prisma } from "../app";
 import { authConfig } from "../configs/auth";
 import AppError from "../errors/appError";
 

@@ -6,7 +6,7 @@ import { PrismaClient } from "@prisma/client";
 import routes from "./routes";
 import swaggerUi from "swagger-ui-express";
 
-import swaggerDocs from "./swagger.json";
+import swaggerDocs from "./../swagger.json";
 
 process.on("SIGTERM", () => {
   process.exit();
