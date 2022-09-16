@@ -4,8 +4,8 @@ import express, { NextFunction, Request, Response } from "express";
 import AppError from "./errors/appError";
 import { PrismaClient } from "@prisma/client";
 import routes from "./routes";
-import swaggerUi from "swagger-ui-express";
-import swaggerDocs from "./../swagger.json";
+// import swaggerUi from "swagger-ui-express";
+// import swaggerDocs from "./../swagger.json";
 
 process.on("SIGTERM", () => {
   process.exit();
