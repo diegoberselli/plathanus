@@ -1,0 +1,679 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Plathanus API Challenge",
+    "description": "Api de criação de foguetes",
+    "termsOfService": " ",
+    "contact": {
+      "email": "diegoberselliz@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://plathanus-challenge.herokuapp.com/",
+      "description": "development"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "summary": "Criação de um usuário",
+        "description": "Rota pra a criação de usuário que poderá ter privilégio de administrador",
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "aplication/json": {
+              "schema": {
+                "$ref": "#components/schemas/Users"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "username": "admin",
+                    "password": "1234",
+                    "isAdm": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "CREATED",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "items": { "$ref": "#/components/schemas/Users" }
+                },
+                "examples": {
+                  "user": {
+                    "value": {
+                      "id": "1e8be9bd-b023-4976-a0ba-ad6ccc4cb348",
+                      "username": "admin",
+                      "password": "1234",
+                      "isAdm": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "username already exists"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Listagem de usuários",
+        "description": "Rota para listagem de todos os usuários",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "user": {
+                    "value": [
+                      {
+                        "username": "admin",
+                        "password": "1234",
+                        "isAdm": true
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "delete": {
+        "summary": "Deleção usuário",
+        "description": "Rota para deletar usuário",
+        "tags": ["Users"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "UUID do usuário",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "NO CONTENT"
+          },
+          "400": {
+            "description": "BAD REQUEST",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Missing authorization token"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Unauthorized"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "User not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Login",
+        "description": "Rota para login de usuários.",
+        "tags": ["Login"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "username": "admin",
+                    "password": "1234"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "aplication/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc0FkbSI6dHJ1ZSwiaWF0IjoxNjYzMzAxNTk3LCJleHAiOjE2NjMzODc5OTcsInN1YiI6IjFlOGJlOWJkLWIwMjMtNDk3Ni1hMGJhLWFkNmNjYzRjYjM0OCJ9.RLKN8u__87B74MUvURnA_mvfFM4SohbWVCJBA1GcrpY"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHORIZED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Wrong username/password"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rockets": {
+      "post": {
+        "summary": "Criação de um Foguete",
+        "description": "Rota para a criação de Foguetes",
+        "tags": ["Rockets"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/Rockets"
+              },
+              "examples": {
+                "rockets": {
+                  "value": {
+                    "name": "Falcon Heavy",
+                    "description": "With the ability to lift into orbit over 54 metric tons (119,000 lb)--a mass equivalent to a 737 jetliner loaded with passengers, crew, luggage and fuel--Falcon Heavy can lift more than twice the payload of the next closest operational vehicle, the Delta IV Heavy, at one-third the cost.",
+                    "height": 118,
+                    "diameter": 12.7,
+                    "mass": 200000,
+                    "image": "https://live.staticflickr.com/65535/48953946911_e60c5bcc5c_b.jpg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "CREATED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": { "$ref": "#/components/schemas/Rockets" }
+                },
+                "examples": {
+                  "rockets": {
+                    "value": {
+                      "id": "21d5a0a1-908d-42c1-ace2-85568824e2f2",
+                      "name": "Falcon Heavy",
+                      "description": "With the ability to lift into orbit over 54 metric tons (119,000 lb)--a mass equivalent to a 737 jetliner loaded with passengers, crew, luggage and fuel--Falcon Heavy can lift more than twice the payload of the next closest operational vehicle, the Delta IV Heavy, at one-third the cost.",
+                      "height": 118,
+                      "diameter": 12.7,
+                      "mass": 200000,
+                      "image": "https://live.staticflickr.com/65535/48953946911_e60c5bcc5c_b.jpg",
+                      "userId": "1e8be9bd-b023-4976-a0ba-ad6ccc4cb348"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Missing authorization token"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Unauthorized"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Listagem de Foguetes",
+        "description": "Rota para a listagem de foguetes",
+        "tags": ["Rockets"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "rockets": {
+                    "value": [
+                      {
+                        "id": "81399eb1-5bdc-4eb8-92c3-0fa59399242f",
+                        "name": "Falcon 1",
+                        "description": "The Falcon 1 was an expendable launch system privately developed and manufactured by SpaceX during 2006-2009. On 28 September 2008, Falcon 1 became the first privately-developed liquid-fuel launch vehicle to go into orbit around the Earth.",
+                        "height": 70,
+                        "diameter": 3.7,
+                        "mass": 200000,
+                        "image": "https://imgur.com/DaCfMsj.jpg"
+                      },
+                      {
+                        "id": "7d9b8152-c341-4009-9f7d-e24b844bd6f4",
+                        "name": "Falcon 9",
+                        "description": "Falcon 9 is a two-stage rocket designed and manufactured by SpaceX for the reliable and safe transport of satellites and the Dragon spacecraft into orbit.",
+                        "height": 70,
+                        "diameter": 12.7,
+                        "mass": 200000,
+                        "image": "https://farm5.staticflickr.com/4599/38583829295_581f34dd84_b.jpg"
+                      },
+                      {
+                        "id": "81399eb1-5bdc-4eb8-92c3-0fa59399242f",
+                        "name": "Falcon 1",
+                        "description": "The Falcon 1 was an expendable launch system privately developed and manufactured by SpaceX during 2006-2009. On 28 September 2008, Falcon 1 became the first privately-developed liquid-fuel launch vehicle to go into orbit around the Earth.",
+                        "height": 70,
+                        "diameter": 3.7,
+                        "mass": 200000,
+                        "image": "https://imgur.com/DaCfMsj.jpg"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHORIZED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Missing authorization headers"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rockets/pagination": {
+      "get": {
+        "summary": "Criação de um Foguete por paginação",
+        "description": "Rota para a listagem de foguetes por paginação, passar query params (take e skip) o primeiro para quantidade de itens para pular e o segundo, para quantos aparecerá na tela.",
+        "tags": ["Rockets"],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "info": {
+                      "skip": 2,
+                      "take": 2,
+                      "next": "https://plathanus-challenge.herokuapp.com/rockets/pagination?take=2&skip=2",
+                      "prev": null
+                    }
+                  }
+                },
+                "examples": {
+                  "rockets": {
+                    "value": [
+                      {
+                        "id": "81399eb1-5bdc-4eb8-92c3-0fa59399242f",
+                        "name": "Falcon 1",
+                        "description": "The Falcon 1 was an expendable launch system privately developed and manufactured by SpaceX during 2006-2009. On 28 September 2008, Falcon 1 became the first privately-developed liquid-fuel launch vehicle to go into orbit around the Earth.",
+                        "height": 70,
+                        "diameter": 3.7,
+                        "mass": 200000,
+                        "image": "https://imgur.com/DaCfMsj.jpg"
+                      },
+                      {
+                        "id": "7d9b8152-c341-4009-9f7d-e24b844bd6f4",
+                        "name": "Falcon 9",
+                        "description": "Falcon 9 is a two-stage rocket designed and manufactured by SpaceX for the reliable and safe transport of satellites and the Dragon spacecraft into orbit.",
+                        "height": 70,
+                        "diameter": 12.7,
+                        "mass": 200000,
+                        "image": "https://farm5.staticflickr.com/4599/38583829295_581f34dd84_b.jpg"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rockets/{id}": {
+      "get": {
+        "summary": "Listagem de Foguetes pelo id",
+        "description": "Rota para a listagem de foguetes pelo id.",
+        "tags": ["Rockets"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "UUid do foguete",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "id": "7d9b8152-c341-4009-9f7d-e24b844bd6f4",
+                    "name": "Falcon 9",
+                    "description": "Falcon 9 is a two-stage rocket designed and manufactured by SpaceX for the reliable and safe transport of satellites and the Dragon spacecraft into orbit.",
+                    "height": 70,
+                    "diameter": 12.7,
+                    "mass": 200000,
+                    "image": "https://farm5.staticflickr.com/4599/38583829295_581f34dd84_b.jpg"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Rocket not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Atualização do Foguete",
+        "description": "Rota para a atualização do Foguete",
+        "tags": ["Rockets"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "UUid do foguete",
+            "required": true
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Rockets"
+              },
+              "examples": {
+                "rockets": {
+                  "value": {
+                    "id": "01d42f06-08f8-4461-bd01-1a0bbd4aae9e",
+                    "name": "Rocket 50",
+                    "description": "blabla ba",
+                    "height": 1.4,
+                    "diameter": 12.29,
+                    "mass": 20000,
+                    "image": "https://farm5.staticflickr.com/4599/38583829295_581f34dd84_b.jpg",
+                    "userId": "1e8be9bd-b023-4976-a0ba-ad6ccc4cb348"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "id": "01d42f06-08f8-4461-bd01-1a0bbd4aae9e",
+                    "name": "Rocket 50",
+                    "description": "blabla ba",
+                    "height": 1.4,
+                    "diameter": 12.29,
+                    "mass": 20000,
+                    "image": "https://farm5.staticflickr.com/4599/38583829295_581f34dd84_b.jpg",
+                    "userId": "1e8be9bd-b023-4976-a0ba-ad6ccc4cb348"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Missing authorization token"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Unauthorized"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Rocket not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleção do Foguete",
+        "description": "Rota para deletar foguetes.",
+        "tags": ["Rockets"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "UUid do foguete",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "NO CONTENT"
+          },
+          "400": {
+            "description": "UNAUTHORIZED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Missing authorization token"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Unauthorized"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "Rocket not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Users": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "Rockets": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "height": {
+            "type": "number"
+          },
+          "diameter": {
+            "type": "number"
+          },
+          "mass": {
+            "type": "number"
+          },
+          "image": {
+            "type": "string"
+          }
+        }
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

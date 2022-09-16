@@ -5,7 +5,6 @@ export const verifyAuthAdmService = (
   response: Response,
   next: NextFunction
 ) => {
-  console.log(req.user);
   const { isAdm } = req.user;
 
   if (!isAdm) {

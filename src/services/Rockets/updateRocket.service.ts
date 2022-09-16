@@ -2,8 +2,10 @@ import { Rocket } from "@prisma/client";
 import AppError from "../../errors/appError";
 import { prisma } from "./../../app";
 
-
-export const UpdateRocketService = async (id: string, data: Partial<Rocket>) => {
+export const UpdateRocketService = async (
+  id: string,
+  data: Partial<Rocket>
+) => {
   const rocket = await prisma.rocket.findUnique({ where: { id } });
 
   if (!rocket) {
@@ -17,5 +19,5 @@ export const UpdateRocketService = async (id: string, data: Partial<Rocket>) => 
     data,
   });
 
-  return updateRocket
+  return updateRocket;
 };

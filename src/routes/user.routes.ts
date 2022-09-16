@@ -7,6 +7,5 @@ export const userRouter = Router();
 
 userRouter.post("/", UsersController.store);
 userRouter.get("/", UsersController.index);
-
 userRouter.use(ensureAuth);
 userRouter.delete("/:id", verifyAuthAdmService, UsersController.delete);
