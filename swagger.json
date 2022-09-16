@@ -15,7 +15,7 @@
       "description": "development"
     },
     {
-      "url": "http://localhost:3333",
+      "url": "https://plathanus-challenge.herokuapp.com",
       "description": "production"
     }
   ],
